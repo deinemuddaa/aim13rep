@@ -24,7 +24,7 @@ and open the template in the editor.
                 <script>
                         $.getJSON('students.json', function(data) {
                            $.each(data.students, function(key,val) {
-                              var listEntry = '<li><a href="#">';
+                              var listEntry = '<li><a href="#studentView" data-parm="'+key+'">';
                               listEntry += '<img src="'+val.img+'"/>';
                               listEntry += '<h2>'+val.lastName+'</h2>';
                               listEntry += '<p>'+val.firstName+'</p>';
@@ -33,11 +33,31 @@ and open the template in the editor.
                            });
                            $('#studentList').listview('refresh');
                            $('#numberStudents').text("Anzahl: "+data.students.length);
+                           
+                           $("a").on("click",function(event) {
+                              var parm = $(this).attr("data-parm");
+                              $("#studImg").attr('src',data.students[parm].img);
+                              $("#studFirstName").html(data.students[parm].firstName);
+                              $("#studLastName").html(data.students[parm].lastName);
+                              $("#studMail").html(data.students[parm].mail);
+                              $("#studMail").attr('href', 'mailto:'+data.students[parm].mail);
+                           });
                         });
                     </script>
             </div>
             <div data-role="footer" data-position="fixed">
                 <h1 id="numberStudents"></h1>
+            </div>
+        </div>
+        <div data-role="page" id="studentView" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>AIM13 App</h1>
+            </div>
+            <div data-role="content">
+                <img id="studImg"/>
+                <p id="studFirstName"></p>
+                <p id="studLastName"></p>
+                <a id="studMail"></a>
             </div>
         </div>
     </body>
